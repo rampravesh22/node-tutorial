@@ -1,6 +1,8 @@
 const express = require("express");
+const fs = require("fs");
 const server = express();
-
+const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+const products = data.products;
 server.use(express.json());
 
 // end points routes
