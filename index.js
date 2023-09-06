@@ -5,21 +5,54 @@ const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
 const products = data.products;
 server.use(express.json());
 
-// end points routes
-server.get("/product/:id", (req, res) => {
-	res.send(req.body);
-});
+// end points, routes, base URL, CRUD
 server.post("/products", (req, res) => {
-	res.send("post completed");
+	const product = req.body;
+	const findProduct = products.find((p) => p.id === product.id);
+	if (findProduct) {
+		res.send(`${product.id} id product is already exists`);
+		return;
+	} else {
+		products.push(product);
+		res.send("product added");
+	}
 });
-server.put("/delete-products/:id", (req, res) => {
-	res.send("put");
+
+//Read GET /products
+server.get("/products", (req, res) => {
+	res.send(products);
+});
+
+// Read GET /products/32
+server.get("/products/:id", (req, res) => {
+	const id = +req.params.id;
+	const product = products.find((p) => p.id === id);
+	res.send(product);
+});
+
+// UPDATE PUT /product/id
+server.put("/products/:id", (req, res) => {
+	const idParams = +req.params.id;
+	const productIndex = products.findIndex((p) => p.id === idParams);
+	products.splice(productIndex, 1, { ...req.body, id: idParams });
+
+	res.status(201).send("product updated");
+});
+
+//Partial update patch product/id
+server.patch("/products/:id", (req, res) => {
+	const id = req.params.id;
+	const productIndex = products.findIndex((p) => p.id === id);
+	const oldProduct = products[productIndex];
+	products.splice(productIndex, 1, { ...oldProduct, ...req.body });
+	res.send("patch updated");
 });
 server.delete("/", (req, res) => {
-	res.send("delete");
-});
-server.patch("/", (req, res) => {
-	res.send("patch");
+	const id = req.params.id;
+	const productIndex = products.findIndex((p) => p.id === id);
+	const oldProduct = products[productIndex];
+	products.splice(productIndex, 1);
+	res.send("patch updated");
 });
 
 server.listen(8080, () => {
