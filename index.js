@@ -1,7 +1,10 @@
 const express = require("express");
+const morgan = require("morgan");
 const server = express();
 
 server.use(express.json());
+server.use(morgan("default"));
+server.use(express.static("public"));
 
 // end points routes
 server.get("/product/:id", auth, (req, res) => {
