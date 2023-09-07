@@ -10,3 +10,4 @@ router
 	.delete("/:id", productController.deleteProduct);
 
 exports.routes = router;
+// YwdEdV6OSGiUIrTI;
