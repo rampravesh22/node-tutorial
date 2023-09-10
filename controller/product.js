@@ -1,30 +1,28 @@
 const express = require("express");
-const fs = require("fs");
-const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
-const products = data.products;
 const server = express();
 server.use(express.json());
 //-----------------------------
-
-exports.createProduct = (req, res) => {
-	const product = req.body;
-	const findProduct = products.find((p) => p.id === product.id);
-	if (findProduct) {
-		res.send(`${product.id} id product is already exists`);
-		return;
-	} else {
-		products.push(product);
-		res.send("product added");
+const model = require("../models/product");
+const Product = model.Product;
+exports.createProduct = async (req, res) => {
+	try {
+		const product = new Product(req.body);
+		product.title = "new phone";
+		await product.save();
+		res.send("data added");
+	} catch (error) {
+		res.send(error);
 	}
 };
 
-exports.getAllProducts = (req, res) => {
+exports.getAllProducts = async (req, res) => {
+	const products = await Product.find();
 	res.send(products);
 };
 
-exports.getProduct = (req, res) => {
+exports.getProduct = async (req, res) => {
 	const id = +req.params.id;
-	const product = products.find((p) => p.id === id);
+	const product = await Product.findById(id);
 	res.send(product);
 };
 
