@@ -26,25 +26,34 @@ exports.getProduct = async (req, res) => {
 	res.send(product);
 };
 
-exports.updateProduct = (req, res) => {
-	const idParams = +req.params.id;
-	const productIndex = products.findIndex((p) => p.id === idParams);
-	products.splice(productIndex, 1, { ...req.body, id: idParams });
-
-	res.status(201).send("product updated");
+exports.updateProduct = async (req, res) => {
+	const id = req.params.id;
+	try {
+		const doc = await Product.findOneAndReplace({ _id: id }, req.body);
+	} catch (error) {
+		console.log(error);
+	}
+	res.send(doc);
 };
 
-exports.partialUpdateProduct = (req, res) => {
+exports.partialUpdateProduct = async (req, res) => {
 	const id = req.params.id;
-	const productIndex = products.findIndex((p) => p.id === id);
-	const oldProduct = products[productIndex];
-	products.splice(productIndex, 1, { ...oldProduct, ...req.body });
-	res.send("patch updated");
+	try {
+		const doc = await Product.findOneAndUpdate({ _id: id }, req.body, {
+			new: true,
+		});
+		res.send(doc);
+	} catch (error) {
+		res.send(express.json(error));
+	}
 };
 
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = async (req, res) => {
 	const id = req.params.id;
-	const productIndex = products.findIndex((p) => p.id === id);
-	products.splice(productIndex, 1);
-	res.send("prdocut  deleted");
+	try {
+		const doc = await Product.findOneAndDelete({ _id: id });
+		res.send(doc);
+	} catch (error) {
+		res.send(express.json(error));
+	}
 };

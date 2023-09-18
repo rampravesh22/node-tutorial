@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const server = express();
-const { addition, substraction, multiply, division } = require("./test.js");
 server.use(express.json());
 
 const main = async () => {
@@ -14,7 +13,6 @@ const main = async () => {
 	// use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 };
 main();
-
 //-----------------------------------------------------//
 const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
