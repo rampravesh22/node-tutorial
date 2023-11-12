@@ -1,9 +1,10 @@
 const express = require("express");
-const server = express();
+const app = express();
+require("./connection/mongooseConnect");
+app.use(express.json());
 
-server.use(express.json());
-// end points routes
-
-server.listen(8080, () => {
-	console.log("server running...");
+const todoRouter = require("./routes/todoRouter");
+app.use("/api", todoRouter);
+app.listen(3000, () => {
+	console.log(`server running at 3000`);
 });
