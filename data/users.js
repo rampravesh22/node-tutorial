@@ -17,8 +17,8 @@ const users = [
 		name: "Jane Doe",
 		email: "janedoe@gmail.com",
 		password: bcrypt.hashSync("12345", 10),
-		isAdmin: alse,
+		isAdmin: false,
 	},
 ];
 
-module.exports = User;
+module.exports = users;

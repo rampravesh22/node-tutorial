@@ -1,7 +1,7 @@
 const dotennv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
-require("colors");
+const colors = require("colors");
 const connectDB = require("./config/db");
 dotennv.config();
 connectDB();
@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 const products = require("./data/products");
+// const seeder = require("./seeder");
 
 //api
 app.get("/api/products", (req, res) => {
