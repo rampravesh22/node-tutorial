@@ -1,11 +1,30 @@
 const dotennv = require("dotenv");
-dotennv.config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+require("colors");
+const connectDB = require("./config/db");
+dotennv.config();
+connectDB();
 const app = express();
+
+app.use(express.json());
 app.use(cors());
+const products = require("./data/products");
+
+//api
+app.get("/api/products", (req, res) => {
+	res.json(products);
+});
+
+app.get("/api/product/:id", (req, res) => {
+	const product = products.find((product) => product._id === req.params.id);
+	if (product) {
+		res.json(product);
+	} else {
+		res.json(`no data found with id ${req.params.id}`);
+	}
+});
 
 app.listen(3000, () => {
-	console.log("running at 3000....");
+	console.log(` Server running at ${process.env.PORT}.... `.bgCyan.black);
 });
