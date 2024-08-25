@@ -5,10 +5,15 @@ const { generateToken } = require("../utils/jtwUtils");
 const login = async (email, password) => {
 	try {
 		const existingUser = await User.findOne({ email });
+		console.log(existingUser);
 		if (!existingUser) {
 			throw new Error("User not found");
 		}
-		const isPasswordValid = bcrypt.compare(password, existingUser.password);
+		const isPasswordValid = await bcrypt.compare(
+			password,
+			existingUser.password
+		);
+
 		if (!isPasswordValid) {
 			throw new Error("Incorrect password");
 		}

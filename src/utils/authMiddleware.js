@@ -21,4 +21,8 @@ const authenticateToken = (req, res, next) => {
 	});
 };
 
-module.exports = { authenticateToken };
+const verifyToken = (token) => {
+	return jwt.verify(token, secretKey);
+};
+
+module.exports = { authenticateToken, verifyToken };
