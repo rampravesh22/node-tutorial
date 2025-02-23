@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cors());
 
 // routes
-
 app.use("/user", userRouter);
 app.use("/todo", verifyToken, todoRouter);
 
